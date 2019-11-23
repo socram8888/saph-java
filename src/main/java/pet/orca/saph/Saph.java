@@ -199,7 +199,12 @@ public class Saph {
 		// Calculate hash for part
 		this.partsMd.reset();
 		this.partsMd.update(buffer, offset, length);
-		this.partsMd.digest(hashBuffer);
+		try {
+			this.partsMd.digest(hashBuffer, 0, HASH_LEN);
+		} catch (DigestException ex) {
+			// I really don't see why or how could a SHA-256 digest fail
+			throw new RuntimeException("Unexpected digest exception", ex);
+		}
 
 		// Add to running digest
 		this.currentMd.update(hashBuffer);
@@ -316,13 +321,13 @@ public class Saph {
 				// Parse low 32 bits of the block as the pair to swap with
 				// We need it to be a long, because ints are signed
 				long jLong =
-						(long) memory[iPos] |
-						(long) memory[iPos + 1] << 8 |
-						(long) memory[iPos + 2] << 16 |
-						(long) memory[iPos + 3] << 24;
+						Byte.toUnsignedLong(memory[iPos]) |
+						Byte.toUnsignedLong(memory[iPos + 1]) << 8 |
+						Byte.toUnsignedLong(memory[iPos + 2]) << 16 |
+						Byte.toUnsignedLong(memory[iPos + 3]) << 24;
 
 				// Cap value to memory length
-				int j = (int) (jLong % memory.length);
+				int j = (int) (jLong % memorySize);
 
 				// Swap now
 				int x = order[i];

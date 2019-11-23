@@ -49,20 +49,20 @@ public class SaphTest {
 
 	@Test
 	public void testVector1Str() throws Exception {
-		Saph saph = new Saph();
+		Saph saph = new Saph(4, 2);
 		saph.add("just");
 		saph.add("a");
 		saph.add("test");
-		assertEquals(saph.hash(), TEST_VECTOR_1);
+		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 
 	@Test
 	public void testVector1Bytes() throws Exception {
-		Saph saph = new Saph();
+		Saph saph = new Saph(4, 2);
 		saph.add(new byte[] { (byte) 0x6A, (byte) 0x75, (byte) 0x73, (byte) 0x74 }); // Add "just".
 		saph.add(new byte[] { (byte) 0x61 }); // Add "a".
 		saph.add(new byte[] { (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74 }); // Add "test".
-		assertEquals(saph.hash(), TEST_VECTOR_1);
+		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 
 	@Test
@@ -71,11 +71,10 @@ public class SaphTest {
 				(byte) 0x6A, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x61, (byte) 0x74,
 				(byte) 0x65, (byte) 0x73, (byte) 0x74
 		};
-		Saph saph = new Saph();
+		Saph saph = new Saph(4, 2);
 		saph.add(justATest, 0, 4); // Add "just".
 		saph.add(justATest, 4, 1); // Add "a".
 		saph.add(justATest, 5, 4); // Add "test".
-		saph.add("test");
-		assertEquals(saph.hash(), TEST_VECTOR_1);
+		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 }
