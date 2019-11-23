@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}©${date?date?string("yyyy")} Marcos Del Sol Vives <marcos@orca.pet>
+${licensePrefix}SPDX-License-Identifier: WTFPL
+<#if licenseLast??>
+${licenseLast}
+</#if>

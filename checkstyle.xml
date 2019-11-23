@@ -1,0 +1,400 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+		"http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+
+<!--
+	Checkstyle configuration
+	Version 1.1
+-->
+<module name="Checker">
+	<!-- Use UTF-8 for source files -->
+	<property name="charset" value="UTF-8" />
+
+	<!-- Raise warning on errors -->
+	<property name="severity" value="warning" />
+
+	<!-- Check .java, .properties and .xml files -->
+	<property name="fileExtensions" value="java, properties, xml" />
+
+	<!-- Tabs are four space wide -->
+	<property name="tabWidth" value="4" />
+
+	<!-- Everything must be documented -->
+	<module name="JavadocPackage" />
+
+	<!-- Force newline at end of file -->
+	<module name="NewlineAtEndOfFile">
+		<property name="lineSeparator" value="lf_cr_crlf" />
+	</module>
+
+	<!-- Sanity checks for .properties -->
+	<module name="Translation" />
+	<module name="UniqueProperties" />
+
+	<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	|            HEADERS           |
+	=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+	<!--
+		Enforce copyright header
+
+		/*
+		 * ©(year) (someone)
+		 * ©(year)~(year) (another guy)
+		 * SPDX-License-Identifier: (license)
+		 */
+	-->
+	<module name="RegexpHeader">
+		<property name="header" value="^/\*$\n^ \* ©[0-9]{4}(\~[0-9]{4})? .*$\n^ \* SPDX-License-Identifier: .*$\n^ \*/$" />
+		<property name="multiLines" value="2" />
+	</module>
+
+	<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	|        SIZE VIOLATIONS       |
+	=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+	<!-- Max line length is 100 lines -->
+	<module name="LineLength">
+		<property name="max" value="100" />
+		<property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+	</module>
+
+	<module name="TreeWalker">
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|          ANNOTATIONS         |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!--
+			Annotations must be on its own line, except for single, parameterless annotations
+
+			private @NonNull Object obj;
+
+			@GET("/auth")
+			public abstract void doAuth(...);
+		-->
+		<module name="AnnotationLocation" />
+
+		<!-- Annotations must use nameless parameters -->
+		<module name="AnnotationUseStyle" />
+
+		<!-- Methods marked in Javadoc as deprecated must have the @Deprecated annotation -->
+		<module name="MissingDeprecated" />
+
+		<!-- Methods marked in Javadoc as overriden must have the @Override annotation -->
+		<module name="MissingOverride" />
+
+		<!-- Package-wide annotations must be in package-info.java -->
+		<module name="PackageAnnotation" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|         BLOCK CHECKS         |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!--
+			Flag unnecessary curly braces blocks. 
+
+			This is not OK:
+				public void guessTheOutput() {
+					int whichIsWhich = 0;
+					{
+						int whichIsWhich = 2;
+					}
+					System.out.println("value = " + whichIsWhich);
+				}
+		-->
+		<module name="AvoidNestedBlocks" />
+		<module name="EmptyBlock" />
+
+		<!-- Use 1TBS style for curly braces -->
+		<module name="LeftCurly" />
+		<module name="NeedBraces" />
+		<module name="RightCurly" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|         CLASS DESIGN         |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Classes with only private constructors must be final, as they cannot be actually extended -->
+		<module name="FinalClass" />
+
+		<!-- Utility classes must have only private constructors -->
+		<module name="HideUtilityClassConstructor" />
+
+		<!-- Interfaces must have methods -->
+		<module name="InterfaceIsType" />
+
+		<!-- Exceptions must be immutable -->
+		<module name="MutableException" />
+
+		<!-- Enforce one top-level (ie not nested) class per source file -->
+		<module name="OneTopLevelClass" />
+
+		<!-- Public fields must be immutable -->
+		<module name="VisibilityModifier">
+			<property name="allowPublicImmutableFields" value="true" />
+		</module>
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|            CODING            |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- equals method's parameter must be Object -->
+		<module name="CovariantEquals" />
+
+		<!-- Flag standalone semicolons -->
+		<module name="EmptyStatement" />
+
+		<!-- When comparing String, literals must be on the left side -->
+		<module name="EqualsAvoidNull" />
+
+		<!-- Checks that classes that either override equals() or hashCode() also overrides the other -->
+		<module name="EqualsHashCode" />
+
+		<!-- Flag uncommented fall-through in switch cases -->
+		<module name="FallThrough" />
+
+		<!-- Disallow throwing generic exceptions -->
+		<module name="IllegalThrows" />
+
+		<!-- Disallow returning specific collection implementations -->
+		<module name="IllegalType" />
+
+		<!--
+			Check for assignments in subexpressions
+
+			This is not OK:
+				String s = Integer.toString(i = 2);
+		-->
+		<module name="InnerAssignment" />
+
+		<!-- Force switch blocks to always have a default case -->
+		<module name="MissingSwitchDefault" />
+
+		<!-- Disallow messing with counter variable in for loops -->
+		<module name="ModifiedControlVariable">
+			<property name="skipEnhancedForLoopVariable" value="true" />
+		</module>
+
+		<!-- Force each variable declaration to be on its own line -->
+		<module name="MultipleVariableDeclarations" />
+
+		<!-- clone() and finalize() are broken -->
+		<module name="NoClone" />
+		<module name="NoFinalizer" />
+
+		<!-- One statement per line -->
+		<module name="OneStatementPerLine" />
+
+		<!-- Check for "package" statement -->
+		<module name="PackageDeclaration" />
+
+		<!-- Flag dumb boolean operations such as "x == true" -->
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+
+		<!-- Disallow comparing strings with == -->
+		<module name="StringLiteralEquality" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|            IMPORTS           |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Disallow star imports -->
+		<module name="AvoidStarImport">
+		   <property name="excludes" value="org.junit.Assert" />
+		</module>
+
+		<!-- Disallow static imports -->
+		<module name="AvoidStaticImport">
+		   <property name="excludes" value="org.junit.Assert.*" />
+		</module>
+
+		<!-- Block sun.* imports -->
+		<module name="IllegalImport" />
+
+		<!-- TODO: configure? -->
+		<!-- <module name="ImportOrder"> -->
+		
+		<!-- Flag unneeded imports, such as from current package -->
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|            JAVADOC           |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Everything must be documented -->
+		<module name="JavadocType" />
+		<module name="JavadocMethod" />
+		<module name="JavadocVariable" />
+
+		<!-- Validate contents of Javadocs -->
+		<module name="JavadocParagraph" />
+		<module name="JavadocStyle" />
+		<module name="NonEmptyAtclauseDescription" />
+
+		<!-- Enforce a particular order for Javadoc tags -->
+		<module name="AtclauseOrder" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|             MISC             |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Arrays must be defined as "Type[] name", not "Type name[]" -->
+		<module name="ArrayTypeStyle" />
+
+		<!-- Flag printable Unicode escapes -->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <property name="allowEscapesForControlCharacters" value="true" />
+            <property name="allowByTailComment" value="true" />
+            <property name="allowNonPrintableEscapes" value="true" />
+		</module>
+
+		<!-- Force tab indentation -->
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^\t* [^*]" />
+			<property name="ignoreComments" value="true" />
+			<property name="message" value="Indentation should be made using tabs not spaces" />
+		</module>
+
+		<!-- Check indentation -->
+		<module name="Indentation">
+			<!-- One tab -->
+            <property name="basicOffset" value="4" />
+            <property name="caseIndent" value="4" />
+            <property name="throwsIndent" value="4" />
+            <property name="arrayInitIndent" value="4" />
+
+			<!-- Two tabs -->
+            <property name="lineWrappingIndentation" value="8" />
+		</module>
+		<module name="CommentsIndentation" />
+
+		<!-- Check that classes and file name match -->
+		<module name="OuterTypeFilename" />
+
+		<!-- Long constants must be prefixed with "L" -->
+		<module name="UpperEll"/>
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|           MODIFIER           |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Check for valid order of modifiers -->
+		<module name="ModifierOrder" />
+
+		<!-- Check for redundant modifiers -->
+		<module name="RedundantModifier" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|            NAMING            |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Check class names -->
+		<module name="TypeName" />
+
+		<!-- Ensure variables have descriptive names -->
+		<module name="CatchParameterName" />
+
+		<!-- Generics parameters must be a single uppercase letter -->
+		<module name="ClassTypeParameterName" />
+		<module name="InterfaceTypeParameterName" />
+		<module name="MethodTypeParameterName" />
+
+		<!-- Constant names are uppercase letters, numbers and _ -->
+		<module name="ConstantName" />
+
+		<!-- Variables and methods must start with lowercase -->
+		<module name="LocalFinalVariableName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="MethodName" />
+		<module name="ParameterName" />
+		<module name="StaticVariableName" />
+
+		<!-- Package name according to Java Language -->
+		<module name="PackageName" />
+
+		<!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		|          WHITESPACE          |
+		=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
+
+		<!-- Enforce single empty lines between important blocks -->
+		<module name="EmptyLineSeparator">
+			<!-- Disallow between normal, uncommented fields -->
+			<property name="allowNoEmptyLineBetweenFields" value="true" />
+		</module>
+
+		<!-- Java spacing check for generics -->
+		<module name="GenericWhitespace" />
+
+		<!-- Disallow spaces on methods between name and params parenthesis -->
+		<module name="MethodParamPad" />
+
+		<!-- Disallow line wrapping on "import" and "package" -->
+		<module name="NoLineWrap" />
+
+		<!--
+			Disallow spaces after @ for annotations, unary operators and array accesses
+				@NonNull property;
+				blocks[1]++;
+		-->
+		<module name="NoWhitespaceAfter" />
+
+		<!-- Disallow spaces before commas, semicolons and unary operations -->
+		<module name="NoWhitespaceBefore">
+			<property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC" />
+		</module>
+
+		<!--
+			TODO: configure this
+		<module name="OperatorWrap">
+			<property name="tokens" value="QUESTION, EQUAL, NOT_EQUAL, SR, BSR" />
+			<property name="option" value="eol" />
+		</module>
+		-->
+
+		<!--
+			Parenthesis padding check according to K&R
+				call(1, 2, 3);
+		-->
+		<module name="ParenPad" />
+
+		<!--
+			Class names inside type castings must not have spaces around:
+				(Set) theCollection;
+		-->
+		<module name="TypecastParenPad" />
+
+		<!--
+			Commas must appear on the same line as the previous statement
+
+			longCall(
+				0xdeadbeef,
+				0x1337
+			);
+		-->
+		<module name="SeparatorWrap">
+			<property name="tokens" value="COMMA" />
+			<property name="option" value="eol" />
+		</module>
+
+		<!--
+			Dots must appear on the next line
+
+			object
+				.remove();
+		-->
+		<module name="SeparatorWrap">
+			<property name="tokens" value="DOT" />
+			<property name="option" value="nl" />
+		</module>
+
+		<!-- Ensure that there are not multiple consecutive spaces -->
+		<module name="SingleSpaceSeparator" />
+
+		<!-- Check for whitespaces after block statements (do, if, while, else), commas and semicolons -->
+		<module name="WhitespaceAfter" />
+	</module>
+</module>
