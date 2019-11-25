@@ -12,17 +12,23 @@ import org.junit.jupiter.api.Test;
  * Test for Saph.
  */
 public class SaphTest {
+
+	/**
+	 * Result for test vector 1.
+	 */
 	private static final byte[] TEST_VECTOR_1 = new byte[] {
-			(byte) 0x8a, (byte) 0x6d, (byte) 0x4f, (byte) 0x4a,
-			(byte) 0x17, (byte) 0x09, (byte) 0x29, (byte) 0xf2,
-			(byte) 0x64, (byte) 0xda, (byte) 0xe9, (byte) 0x67,
-			(byte) 0x74, (byte) 0x8b, (byte) 0xf9, (byte) 0xf8,
-			(byte) 0xf6, (byte) 0x3a, (byte) 0xc7, (byte) 0x32,
-			(byte) 0x09, (byte) 0x3e, (byte) 0xd4, (byte) 0x39,
-			(byte) 0xc4, (byte) 0x44, (byte) 0xb0, (byte) 0x44,
-			(byte) 0x73, (byte) 0x01, (byte) 0x09, (byte) 0xff
+			(byte) 0x8a, (byte) 0x6d, (byte) 0x4f, (byte) 0x4a, (byte) 0x17, (byte) 0x09,
+			(byte) 0x29, (byte) 0xf2, (byte) 0x64, (byte) 0xda, (byte) 0xe9, (byte) 0x67,
+			(byte) 0x74, (byte) 0x8b, (byte) 0xf9, (byte) 0xf8, (byte) 0xf6, (byte) 0x3a,
+			(byte) 0xc7, (byte) 0x32, (byte) 0x09, (byte) 0x3e, (byte) 0xd4, (byte) 0x39,
+			(byte) 0xc4, (byte) 0x44, (byte) 0xb0, (byte) 0x44, (byte) 0x73, (byte) 0x01,
+			(byte) 0x09, (byte) 0xff
 	};
 
+	/**
+	 * Test that no negative memory is allowed as input.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void negativeMemoryTest() throws Exception {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -30,13 +36,21 @@ public class SaphTest {
 		});
 	}
 
+	/**
+	 * Test that iterations may not be negative.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
-	public void negativeSpaceTest() throws Exception {
+	public void negativeIterationTest() throws Exception {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new Saph(8, -1);
 		});
 	}
 
+	/**
+	 * Test that data may not be added after finishing.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void addAfterHashTest() throws Exception {
 		assertThrows(IllegalStateException.class, () -> {
@@ -47,6 +61,10 @@ public class SaphTest {
 		});
 	}
 
+	/**
+	 * Compare with test vector 1, adding data as strings.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void testVector1Str() throws Exception {
 		Saph saph = new Saph(4, 2);
@@ -56,15 +74,36 @@ public class SaphTest {
 		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 
+	/**
+	 * Compare with test vector 1, adding data as byte arrays.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void testVector1Bytes() throws Exception {
 		Saph saph = new Saph(4, 2);
-		saph.add(new byte[] { (byte) 0x6A, (byte) 0x75, (byte) 0x73, (byte) 0x74 }); // Add "just".
-		saph.add(new byte[] { (byte) 0x61 }); // Add "a".
-		saph.add(new byte[] { (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74 }); // Add "test".
+
+		// Add "just".
+		saph.add(new byte[] {
+				(byte) 0x6A, (byte) 0x75, (byte) 0x73, (byte) 0x74 }
+		);
+
+		// Add "a".
+		saph.add(new byte[] {
+				(byte) 0x61 }
+		);
+
+		// Add "test".
+		saph.add(new byte[] {
+				(byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74 // Add "test".
+		});
+
 		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 
+	/**
+	 * Compare with test vector 1, adding from chunks.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void testVector1ByteChunk() throws Exception {
 		byte[] justATest = new byte[] {
@@ -78,6 +117,10 @@ public class SaphTest {
 		assertArrayEquals(TEST_VECTOR_1, saph.hash());
 	}
 
+	/**
+	 * Check it matches Python test 2.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void pythonTest2() throws Exception {
 		byte[] hash = new Saph().add("salt").add("pass").hash();
@@ -92,6 +135,10 @@ public class SaphTest {
 		assertArrayEquals(correct, hash);
 	}
 
+	/**
+	 * Check it matches Python test 3.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void pythonTest3() throws Exception {
 		byte[] hash = new Saph().add("pepper").add("username").add("password").hash();
@@ -106,6 +153,10 @@ public class SaphTest {
 		assertArrayEquals(correct, hash);
 	}
 
+	/**
+	 * Check it matches Python test 4.
+	 * @throws Exception unexpected exception
+	 */
 	@Test
 	public void pythonTest4() throws Exception {
 		byte[] hash = new Saph().add("qepper").add("username").add("password").hash();

@@ -116,6 +116,7 @@
 						</goals>
 						<configuration>
 							<configLocation>${project.basedir}/checkstyle.xml</configLocation>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
 							<consoleOutput>false</consoleOutput>
 							<encoding>UTF-8</encoding>
 							<violationSeverity>warning</violationSeverity>
