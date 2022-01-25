@@ -1,0 +1,13 @@
+
+# Build using Maven 3.8 with JDK11
+image: maven:3.8-jdk-11-slim
+
+# Cache downloaded dependencies and plugins between builds.
+cache:
+  paths:
+    - .m2/repository
+
+# Execute verify
+test:
+  script:
+    - 'mvn clean verify'
